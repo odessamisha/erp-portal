@@ -1,0 +1,22 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+.fi-input, .fi-select-input, .fi-fo-field-wrp-label > span {
+    @apply text-xs;
+}
+ 
+form .fi-section.fi-section:not(.fi-section-not-contained):not(.fi-divided)>.fi-section-content-ctn>.fi-section-content, 
+.fi-section:not(.fi-section-not-contained).fi-divided>.fi-section-content-ctn>.fi-section-content {
+    @apply p-2;
+}
+ 
+.fi-sc.fi-sc-has-gap {
+    @apply gap-2;
+} 
+
+html, body, .fi-body {
+    font-size: 14px; /* за замовчуванням зазвичай 16px */
+}
