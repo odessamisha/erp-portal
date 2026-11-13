@@ -164,6 +164,7 @@ class ClientsTable
 
                     } catch (WialonException $exception) {
                         // WialonException is thrown when request fails or service returns error response.
+                        //тут 
                     }
                 }),  
 
