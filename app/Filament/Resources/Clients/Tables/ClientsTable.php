@@ -1,5 +1,5 @@
 <?php
-
+//main
 namespace App\Filament\Resources\Clients\Tables;
 
 use App\Models\Client;
@@ -164,7 +164,6 @@ class ClientsTable
 
                     } catch (WialonException $exception) {
                         // WialonException is thrown when request fails or service returns error response.
-                        //this is main
                     }
                 }),  
 
