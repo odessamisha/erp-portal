@@ -101,7 +101,7 @@ class ClientsTable
                             
                     try {
                         $wialon->login($token);
-                        // After logging in to service a session ID is returned.
+                        
                         //поиск ID пользователя
                         $svc = 'core/search_items';
                         $params = [
@@ -119,7 +119,6 @@ class ClientsTable
                             'to' => 0,
                         ];
                         $objects = $wialon->unitByName($svc,$params);
-                        //dd($objects);
                         if (count($objects['items']) <> 0)
                             {
                                 $user_id = $objects['items'][0]['id'];
@@ -151,7 +150,6 @@ class ClientsTable
                                     $svc = 'core/search_items';
                                     $objects = $wialon->unitByName($svc,$params);
                                     $cur_auto_imei = $objects['items'][0]['uid'];
-                                    //dd($cur_auto_id);
                                     //проверяем есть ли уже в базе такое авто
                                     $query = Auto::where('imei', $cur_auto_imei)
                                         ->where('server_id', $server_id)
