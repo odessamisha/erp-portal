@@ -1,5 +1,4 @@
 <?php
-//main
 namespace App\Filament\Resources\Clients\Tables;
 
 use App\Models\Client;
