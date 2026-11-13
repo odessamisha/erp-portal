@@ -103,6 +103,7 @@ class ClientsTable
                         $wialon->login($token);
                         // After logging in to service a session ID is returned.
                         //поиск ID пользователя
+                        // for branch 2
                         $svc = 'core/search_items';
                         $params = [
                             'spec' => [
