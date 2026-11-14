@@ -48,7 +48,7 @@ class OperationForm
                                 ->relationship(
                                     name: 'operation_type', 
                                     titleAttribute: 'description',
-                                    modifyQueryUsing: fn (Builder $query) => $query->where('operation_flow','incoming') 
+                                    //modifyQueryUsing: fn (Builder $query) => $query->where('operation_flow','incoming') 
                                     )
                                 ->createOptionForm([
                                     TextInput::make('operation_flow')

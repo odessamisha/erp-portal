@@ -28,7 +28,7 @@ class EditOperation extends EditRecord
 
     public function getTitle(): string|Htmlable
     {
-        return 'Oперация - '.$this->getBaseRecord()->getAttributeValue('operation_type');
+        return 'Oперация - '.$this->getBaseRecord()->getAttributeValue('operation_code');
     }
 
     
