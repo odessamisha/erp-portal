@@ -16,7 +16,7 @@ class Client extends Model
     protected $fillable = ['name','username','client_type','payroll_type','server_id','provider_id','manager_id','city_id','address',
             'contact_name','contact_phone','contract_number','contract_date','exchange_id','exchange_data',
             'buhgalter_name','buhgalter_phone','buhgalter_email','bank_account','delivery_address','balance','user_id',
-            'is_active','is_locked','other'];
+            'is_active','is_locked','other','search_phrases'];
 
     protected $casts = [
         'is_active' => 'boolean',
