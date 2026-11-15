@@ -86,6 +86,7 @@ class ClientForm
                                     Select::make('city_id')
                                         ->columnSpan(1)
                                         ->label('Город')
+                                        ->default(1)
                                         ->relationship('city', 'name')
                                         ->createOptionForm([
                                             TextInput::make('name')
@@ -131,8 +132,14 @@ class ClientForm
                             Section::make()
                                 ->columnSpan(3)
                                 ->schema([
+                                    TextInput::make('search_phrases')
+                                        ->label('Поисковые фразы')
+                                        ->placeholder('Введите поисковые фразы через запятую')
+                                        ->helperText('Используется для поиска клиента по ключевым словам. Например: "ключевое слово1, ключевое слово2, ключевое слово3"')
+                                        ->columnSpan(3),
                                     RichEditor::make('other')
                                         ->label('Дополнительная информация')
+                                        ->columnSpan(3)
                                 ])
                         ]),
                     Tab::make('Контакты')
@@ -196,6 +203,7 @@ class ClientForm
 
                         Select::make('server_id')
                             ->label('Адрес сервера:')
+                            ->default(7)
                             ->required()
                             ->relationship('server', 'name'),
                         TextInput::make('access_token')
