@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('clients', function (Blueprint $table) {
             //
-            $table->string('search_phrases')->after('other')->default('');
+            $table->string('search_phrases')->after('other')->nullable();
+
         });
     }
 
