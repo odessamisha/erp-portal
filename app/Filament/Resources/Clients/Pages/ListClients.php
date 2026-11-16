@@ -17,7 +17,11 @@ class ListClients extends ListRecords
     public function getTabs(): array
     {
         return [
-            'all' => Tab::make()->label('Все клиенты'),
+            'all' => Tab::make()->label('Активные клиенты')
+                ->modifyQueryUsing(function (Builder $query) {
+                    return $query->where('is_active',true);
+                })
+            ,
             'private' => Tab::make()->label('Физ. лица')
                 ->modifyQueryUsing(function (Builder $query) {
                     return $query->where('client_type','private');
@@ -34,6 +38,11 @@ class ListClients extends ListRecords
                 ->modifyQueryUsing(function (Builder $query) {
                     return $query->where('is_locked',true);
                 }),
+            'garbage' => Tab::make()->label('Корзина')
+                ->modifyQueryUsing(function (Builder $query) {
+                    return $query->where('is_active',false);
+                })
+            ,    
         ];
     }
 
