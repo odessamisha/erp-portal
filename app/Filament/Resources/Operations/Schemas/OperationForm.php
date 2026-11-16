@@ -14,7 +14,11 @@ use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Support\Enums\TextSize;
+use Filament\Support\Enums\FontWeight;
 
 
 class OperationForm
@@ -36,6 +40,7 @@ class OperationForm
                                 ->searchable()
                                 ->preload()
                                 ->required()
+                                ->live()
                                 ->columnSpan(4),
                                 
                             TextInput::make('operation_flow')
@@ -123,12 +128,32 @@ class OperationForm
                                 ->afterStateUpdated(function (Set $set, ?string $state) {
                                     $set('total', $state);
                                 }),
-    
+
                             TextInput::make('total')
                                 ->label('Сумма операции (Учетная)')
                                 ->required()
                                 ->numeric()
                                 ->default(0),
+                            
+                                
+                            TextEntry::make('balance')
+                                ->label('Баланс клиента')
+                                ->default(function (Set $set, Get $get){
+                                    $clientId = $get('client_id');
+                                    if ($clientId) {
+                                        $client = Client::find($clientId);
+                                        return $client ? $client->balance : 0;
+                                    }
+                                    return 0;
+                                })
+                                ->color(fn(int $state): string => $state < 0? 'danger' : 'success')
+                                ->money('UAH')
+                                ->size(TextSize::Large)
+                                ->weight(FontWeight::ExtraBold)
+                                ->alignEnd()
+                                ->columnSpan(2)
+                                ,
+                                
                             
                             RichEditor::make('note')
                                 ->label('Содержание операции')

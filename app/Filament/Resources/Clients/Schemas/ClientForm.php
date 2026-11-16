@@ -124,6 +124,26 @@ class ClientForm
                                             
                                         ])
                                         ,
+                                    ToggleButtons::make('is_active')
+                                        ->label('Статус активности')
+                                        ->boolean()
+                                        ->inline()
+                                        ->default(false)
+                                        ->options([
+                                            true => 'Включен',
+                                            false => 'Отключен'
+                                        ])
+                                        ->colors([
+                                            false => 'danger',
+                                            true => 'primary'
+                                        ])
+                                        ->icons([
+                                            false => Heroicon::OutlinedBoltSlash,
+                                            true => Heroicon::OutlinedBolt,
+                                            
+                                        ])
+                                        ,
+
                                     TextInput::make('user_id')    
                                         ->default(Auth::user()->id)
                                         ->hidden(fn (string $operation): bool => $operation === 'edit'),
