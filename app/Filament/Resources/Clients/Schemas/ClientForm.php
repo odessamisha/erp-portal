@@ -128,7 +128,7 @@ class ClientForm
                                         ->label('Статус активности')
                                         ->boolean()
                                         ->inline()
-                                        ->default(false)
+                                        ->default(true)
                                         ->options([
                                             true => 'Включен',
                                             false => 'Отключен'

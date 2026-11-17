@@ -69,7 +69,13 @@ class OperationsTable
                     ->label('Сумма операции')
                     ->money('UAH')
                     ->sortable()
+                    ->summarize([
+                        Sum::make(),
+                    
+                    ])
                     ->searchable(),
+
+
                 TextColumn::make('note')
                     ->label('Содержание')
                     ->limit(30)
@@ -155,7 +161,27 @@ class OperationsTable
 
                 Action::make('AddClient')
                     ->label('Добавить клиента')
-                    ->url('/admin/clients/create')
+                    ->url('/admin/clients/create'),
+
+                Action::make('TestAction')
+                    ->label('Тест сервиса')
+                    ->action(function () {
+                        $messenger = new \App\Services\EchatMessanger();
+                        $messenger->channel_connect();
+                        $result = $messenger->messages_send([
+                            "message" => [
+                                "id" => "External message ID 1",
+                                "text" => "This is a test message from my Laravel application.",
+                            ],
+                            "contact" => [
+                                "number" => "+380673480489"
+                            ]  
+                        ]);
+                        $messenger->channel_disconnect();
+                        dd($result); // Выводим результат в дамп
+                        // Выводим результат в лог
+                        //\Log::info($result);
+                    })    
             ]);
     }
 }
