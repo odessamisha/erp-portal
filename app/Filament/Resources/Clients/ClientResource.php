@@ -48,6 +48,7 @@ class ClientResource extends Resource
         return [
             RelationManagers\AutosRelationManager::class,
             RelationManagers\OperationsRelationManager::class,
+            RelationManagers\ClientMessagesRelationManager::class,
         ];
     }
 

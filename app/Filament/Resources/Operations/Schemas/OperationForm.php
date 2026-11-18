@@ -43,23 +43,35 @@ class OperationForm
                                 ->live()
                                 ->columnSpan(4),
                                 
-                            TextInput::make('operation_flow')
+                            Select::make('operation_flow')
                                 ->label('Направление операции')
                                 ->default('incoming')
-                                ->readOnly(),
+                                ->options([
+                                    'incoming' => 'Оплата',
+                                    'payroll' => 'Начисление/Продажа',
+                                ])
+                                ->live(),
 
                             Select::make('operation_type_id')
                                 ->label('Тип операции')
                                 ->relationship(
                                     name: 'operation_type', 
                                     titleAttribute: 'description',
-                                    //modifyQueryUsing: fn (Builder $query) => $query->where('operation_flow','incoming') 
+                                    modifyQueryUsing: function (Builder $query, Get $get) {
+                                        if ($get('operation_flow') === 'incoming') {
+                                            return $query->where('operation_flow','incoming');
+                                        } elseif ($get('operation_flow') === 'payroll') {
+                                            return $query->where('operation_flow','payroll');
+                                        }
+                                    } 
+                                    
+                                     
                                     )
                                 ->createOptionForm([
                                     TextInput::make('operation_flow')
                                         ->label('Направление операции')
                                         ->default('incoming')
-                                        ->readOnly()
+                                        //->readOnly()
                                         ->required(),
                                     TextInput::make('name')
                                         ->label('Название операции')

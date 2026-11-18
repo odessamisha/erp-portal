@@ -3,7 +3,8 @@
 namespace App\Filament\Resources\Operations\Tables;
 
 use App\Models\Auto;
-//use App\Models\Client;
+
+use App\Models\ClientMessage;
 use App\Models\Operation;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
@@ -168,17 +169,28 @@ class OperationsTable
                     ->action(function () {
                         $messenger = new \App\Services\EchatMessanger();
                         $messenger->channel_connect();
+
+                        $message = new ClientMessage();
+                        $message->client_id = 4; // Замените на реальный ID клиента 
+                        $message->message_id = 'nEUaMpupQFjDR45E';
+                        $message->messenger = 'viber';
+                        $message->message = 'This is a test message from my Laravel application.';
+                        $message->status = 'sending';
+                        $message->type = 'outgoing_message';
+                        $message->save();
+                        /*
                         $result = $messenger->messages_send([
                             "message" => [
-                                "id" => "External message ID 1",
+                                "id" => str()->random(),
                                 "text" => "This is a test message from my Laravel application.",
                             ],
                             "contact" => [
-                                "number" => "+380673480489"
+                                "number" => "+380674730054"
                             ]  
                         ]);
-                        $messenger->channel_disconnect();
-                        dd($result); // Выводим результат в дамп
+                        */
+                        //$messenger->channel_disconnect();
+                        //dd($result); // Выводим результат в дамп
                         // Выводим результат в лог
                         //\Log::info($result);
                     })    

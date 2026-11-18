@@ -7,6 +7,7 @@ use App\Models\Operation;
 use App\Observers\OperationObserver;
 use App\Models\Auto;
 use App\Observers\AutoObserver;
+ use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+
+        if (env(key: 'APP_ENV') !=='local') {
+             URL::forceScheme(scheme:'https');
+}
     }
 
     /**
@@ -27,5 +32,7 @@ class AppServiceProvider extends ServiceProvider
         Operation::observe(OperationObserver::class);
         Auto::observe(AutoObserver::class);
     }
+
+    
 
 }

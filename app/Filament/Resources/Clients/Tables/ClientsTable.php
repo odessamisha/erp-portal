@@ -39,15 +39,26 @@ class ClientsTable
                     ->sortable('ASC')
                     ->label('Название клиента'),
 
+                TextColumn::make('contact_phone')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Контактный телефон')
+                    ->copyable()
+                    ->copyMessage('Скопировано!')
+                    ->copyMessageDuration(1500)
+                    ->toggleable(),    
+
 
                 TextColumn::make('provider.name')
                     ->label('Поставщик услуг')
+                    ->toggleable()
                     ->sortable(),
 
                 TextColumn::make('autos_count')
                     ->numeric()
                     ->label('Объекты')
-                    ->counts(['autos' => fn (Builder $query) => $query,]),
+                    ->counts(['autos' => fn (Builder $query) => $query,])
+                    ->toggleable(),
 
                 TextColumn::make('balance')
                     ->label('Баланс')
