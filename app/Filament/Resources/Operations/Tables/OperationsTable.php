@@ -30,6 +30,8 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Illuminate\Support\HtmlString;
 
 use function PHPUnit\Framework\assertNotTrue;
 use Illuminate\Database\Eloquent\Builder;
@@ -79,7 +81,8 @@ class OperationsTable
 
                 TextColumn::make('note')
                     ->label('Содержание')
-                    ->limit(30)
+                    //->html()
+                    ->limit(50)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
                         if (strlen($state) <= $column->getCharacterLimit()) {

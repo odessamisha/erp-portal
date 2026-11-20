@@ -62,6 +62,7 @@ class ClientMessagesRelationManager extends RelationManager
                     ])
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'sending' => 'Отправка',
+                        'prepared' => 'Подготовлено',
                         'delivered' => 'Доставлено',
                         'read' => 'Прочитано',
                         'error' => 'Ошибка',

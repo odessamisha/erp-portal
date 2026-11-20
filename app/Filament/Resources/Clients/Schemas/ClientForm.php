@@ -124,6 +124,8 @@ class ClientForm
                                             
                                         ])
                                         ,
+                                    TextInput::make('block_date')    
+                                    ,    
                                     ToggleButtons::make('is_active')
                                         ->label('Статус активности')
                                         ->boolean()

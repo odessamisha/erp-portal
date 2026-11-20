@@ -17,7 +17,7 @@ use Carbon\Carbon;
 use App\Models\Client;
 use App\Models\Operation;
 use App\Models\OperationAuto;
-
+use App\Models\Provider;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use Sashalenz\Privat24BusinessApi\Privat24BusinessApi;
@@ -251,14 +251,23 @@ class ListOperations extends ListRecords
                                     ->placeholder(now()->format('d-m-Y'))
                                     ->closeOnDateSelection()
                                     ,
+                                Select::make('provider_id')
+                                    ->label('Поставщик услуг')
+                                    ->options(Provider::query()->pluck('name','id'))
+                                    ->default(1)
+                                    ->columnSpan(2)
+                                    ->required(),
                             ])
                     ])
                     ->action(function (array $data) {
-                        $token ='e85a8456-eee6-4b74-9c42-909fbab5a7ac+Q6kbs4GHyxgZrjg+/WQQjkA4yo8KmIvJBoYGrtA23Eqtnb+7GjLEUi4u8HfuYpdAnK9Tqr8oixowhDMB++dAJefMSSYQuw9AnGC0V6MxBzSvmXNPdgQ9GqiYk87xEOOYuZShfkb3E58CEd6HxRb6K7rGR0+twWsm0LioNLDw9bQDfzbYlx16iITyY8jWsdbe3SEg2+VETbceeT2swZXOol/WmwEVkM32s3OXWoNuTxd9iBME4QhXc/s6kygxlwVFHzIwH0=';
+                        $provider = Provider::find($data['provider_id']);
+
+                        $token = $provider->token;
+                        $acc = $provider->iban;
                         $followId = '';
                         $startDate = Carbon::parse($data['start_date']);
                         $endDate = Carbon::parse($data['end_date']);
-                        $acc = 'UA383052990000026003044922252';
+                        
                         $exist_next_page = true;
                         
                         while ($exist_next_page) {
@@ -301,7 +310,7 @@ class ListOperations extends ListRecords
                                                 'transaction_total' => $tx->SUM,
                                                 'status' => 'pending',
                                                 'active' => true,
-                                                'note' => $tx->AUT_CNTR_NAM.' => '.$tx->OSND
+                                                'note' => $tx->AUT_CNTR_NAM.' => ('.$provider->name.') '.$tx->OSND
                                             );
                                             //сохраняем операцию в базе
                                             $cur_operation = Operation::create($record);

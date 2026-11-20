@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('client_messages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
-            $table->enum('messenger',['viber','telegram','whatsapp'])->nullable();
+            $table->enum('messenger',['Viber','Telegram','Whatsapp'])->nullable();
             $table->string('message_id')->nullable();
             $table->string('message');
-            $table->enum('status',['sending','delivered','read','error'])->nullable();
+            $table->enum('status',['prepared','sending','delivered','read','error'])->nullable();
             $table->enum('type',['incoming_message','outgoing_message'])->nullable();
             $table->string('error_message')->nullable();
             $table->timestamp('delivered_at')->nullable();
