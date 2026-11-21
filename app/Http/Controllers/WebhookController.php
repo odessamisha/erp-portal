@@ -45,7 +45,7 @@ class WebhookController extends Controller
         $message->error_message = $description;
         $message->delivered_at = now();
         $message->save();        
-
+        \Log::info('Message status updated: ' . $message->id);
         return response()->json(['status' => 'success']);
     }
 }

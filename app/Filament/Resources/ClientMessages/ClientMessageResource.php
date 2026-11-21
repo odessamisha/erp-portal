@@ -24,6 +24,8 @@ class ClientMessageResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'client.name';
 
+    protected static ?string $pluralModelLabel = 'Обмен сообщениями';
+
     public static function form(Schema $schema): Schema
     {
         return ClientMessageForm::configure($schema);

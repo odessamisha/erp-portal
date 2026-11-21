@@ -137,6 +137,7 @@ class ListOperations extends ListRecords
                                 ->where('period_year',$data['period_year'])
                                 ->where('period_month',$data['period_month'])
                                 ->where('client_id', $client_id)
+                                ->where('operation_type_id', 1)
                                 ->get();
 
                             if (count($query) == 0) {

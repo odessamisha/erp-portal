@@ -43,11 +43,20 @@ class ClientMessagesRelationManager extends RelationManager
     {
         return $table
             ->columns([
+                TextColumn::make('created_at')
+                    ->label('Время создания')
+                    ->sortable()
+                    ->dateTime('d.m.Y H:i:s'),
                 TextColumn::make('message')
                     ->label('Сообщение')
-                    ->wrap()
                     ->limit(50)
-                    ->sortable()
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= $column->getCharacterLimit()) {
+                            return null;
+                        }
+                        return $state; // показує повний текст у тултіпі, якщо він обрізаний
+                    })
                     ->searchable(),
                 TextColumn::make('status')
                     ->label('Статус')
@@ -97,6 +106,7 @@ class ClientMessagesRelationManager extends RelationManager
                     ->sortable()
                     ->searchable(),
             ])
+            ->defaultSort('created_at', direction: 'desc')
             ->headerActions([
                 CreateAction::make(),
             ]);

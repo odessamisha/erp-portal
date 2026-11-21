@@ -171,11 +171,11 @@ class OperationsTable
                     ->label('Тест сервиса')
                     ->action(function () {
                         $messenger = new \App\Services\EchatMessanger();
-                        $messenger->channel_connect();
+                        //$messenger->channel_connect();
 
                         $message = new ClientMessage();
                         $message->client_id = 4; // Замените на реальный ID клиента 
-                        $message->message_id = 'nEUaMpupQFjDR45E';
+                        $message->message_id = str()->random();
                         $message->messenger = 'viber';
                         $message->message = 'This is a test message from my Laravel application.';
                         $message->status = 'sending';
@@ -191,11 +191,11 @@ class OperationsTable
                                 "number" => "+380674730054"
                             ]  
                         ]);
-                        */
                         //$messenger->channel_disconnect();
                         //dd($result); // Выводим результат в дамп
                         // Выводим результат в лог
                         //\Log::info($result);
+                        */
                     })    
             ]);
     }

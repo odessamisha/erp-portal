@@ -136,6 +136,7 @@ class OperationForm
                                 ->required()
                                 ->numeric()
                                 ->default(0)
+                                ->minValue(1)
                                 ->live()
                                 ->afterStateUpdated(function (Set $set, ?string $state) {
                                     $set('total', $state);

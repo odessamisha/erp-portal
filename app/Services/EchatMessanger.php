@@ -18,10 +18,6 @@ class EchatMessanger
         //
     }
 
-    public function doSomething(): string
-    {
-        return 'Привет из моего класса!';
-    }
 	
     /** RemoteAPI request performer
 		* action - RemoteAPI command name

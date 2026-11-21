@@ -56,9 +56,9 @@ class AutoObserver
         if ($prevStatus == 'deleted' and $newStatus == 'active'){
             return;
         }
-
+        //назначение авто клиенту
         if ($auto->wasChanged('client_id') and $auto->getOriginal('client_id') == NULL and $prevStatus == 'active'){
-            $this->adjustOperation($auto,$auto->tarif->price); 
+            //$this->adjustOperation($auto,$auto->tarif->price); 
         }
 
         if ($auto->wasChanged('client_id') and $payroll_type == 'prepay' and $prevStatus == 'deleted'){
