@@ -214,7 +214,7 @@ class ListOperations extends ListRecords
                                     }    
 
                                     $cur_operation->total = -1*$total;
-                                    $cur_operation->transaction_total = -1*$total;
+                                    
                                     
                                     $cur_operation->save();
                                    // $client->balance -= $total;
