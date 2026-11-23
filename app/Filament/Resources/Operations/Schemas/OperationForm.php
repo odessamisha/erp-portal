@@ -131,19 +131,9 @@ class OperationForm
                                 ->readOnly()
                                 ->required(),
 
-                            TextInput::make('transaction_total')
-                                ->label('Сумма операции (Полная)')
-                                ->required()
-                                ->numeric()
-                                ->default(0)
-                                ->minValue(1)
-                                ->live()
-                                ->afterStateUpdated(function (Set $set, ?string $state) {
-                                    $set('total', $state);
-                                }),
-
                             TextInput::make('total')
-                                ->label('Сумма операции (Учетная)')
+                                ->label('Сумма операции')
+                                ->minValue(1)
                                 ->required()
                                 ->numeric()
                                 ->default(0),
@@ -164,7 +154,7 @@ class OperationForm
                                 ->size(TextSize::Large)
                                 ->weight(FontWeight::ExtraBold)
                                 ->alignEnd()
-                                ->columnSpan(2)
+                                ->columnSpan(3)
                                 ,
                                 
                             

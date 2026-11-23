@@ -14,4 +14,19 @@ class CreateOperation extends CreateRecord
     {
         return $this->previousUrl ?? $this->getResource()::getUrl('index');
     }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+    //    dd($data);
+            
+        if ($data['operation_flow'] == 'payroll')
+            {
+                
+                $data['total'] = -1*$data['total'];
+                
+            }
+        
+
+            return $data;
+    }
 }

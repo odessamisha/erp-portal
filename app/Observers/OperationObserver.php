@@ -31,27 +31,32 @@ https://pb.ua/short?5YYLS
 
     public function created(Operation $operation): void
     {
-        //
-       // dd($operation);
-        if ($operation->operation_flow == 'payroll')
-        {
-            $operation->total = -1 * abs($operation->total);
-            $operation->save();
-        }
-
 
         if ($operation->client_id <> NULL && (! $operation->wasChanged('total')))
             {
                 $oprTotal = ($operation->total ?? 0);    
                 $this->adjustBalance($operation, $oprTotal);
+                
+                if ($operation->operation_flow == 'payroll' && $operation->operation_type_id  == 8){
+                    $full_message = "Вам нарахована сумма ".abs($operation->total)."грн. від {$operation->operation_ts} за виконані роботи. 
+Ваш поточний баланс: {$operation->client->balance}грн."; 
+                }
 
-                if($operation->operation_flow == 'incoming' && $oprTotal > 0){
-                    $this->sendMessage($operation->client, "Ваша оплата на сумму {$oprTotal}грн. від {$operation->operation_ts} була успішно прийнята.
-                    Ваш поточний баланс: {$operation->client->balance}грн."); 
+                if ($operation->operation_flow == 'payroll' && $operation->operation_type_id  == 7){
+                    $full_message = "Вам нарахована сумма ".abs($operation->total)."грн. від {$operation->operation_ts} за обладнання. 
+Ваш поточний баланс: {$operation->client->balance}грн."; 
+                }
+
+
+                if ($operation->operation_flow == 'incoming' && $oprTotal > 0){
+                    $full_message = "Ваша оплата на сумму {$oprTotal}грн. від {$operation->operation_ts} була успішно прийнята.
+                    Ваш поточний баланс: {$operation->client->balance}грн."; 
                 }
 
                 
             }
+        //отправка сообщения
+        $this->sendMessage($operation->client,$full_message);
         
     }
 
@@ -88,26 +93,16 @@ https://pb.ua/short?5YYLS
         $this->adjustBalance($operation, $diff);
         if ($diff > 0){
             $full_message = "Ваш баланс пополнен на сумму {$diff}грн. від {$operation->operation_ts}.
-            Ваш поточний баланс: {$operation->client->balance}грн."; 
-            
+            Ваш поточний баланс: {$operation->client->balance}грн.";     
         }
         else{
             if ($originalTotal == 0){
-                if($operation->operation_flow == 'payroll' && $operation->operation_type_id == 7){
-                   $full_message = "Вам нарахована сумма ".abs($diff)."грн. від {$operation->operation_ts} за обладнання. 
-Ваш поточний баланс: {$operation->client->balance}грн."; 
-                }
-                elseif($operation->operation_flow == 'payroll' && $operation->operation_type_id  == 8){
-                    $full_message = "Вам нарахована сумма ".abs($diff)."грн. від {$operation->operation_ts} за виконані роботи. 
-Ваш поточний баланс: {$operation->client->balance}грн."; 
-                }
-                elseif($operation->operation_flow == 'payroll' && $operation->operation_type_id  == 1 && $diff <> 0){
                     $full_message = "Нарахована абонплата за {$operation->period_month}-{$operation->period_year} на суму ".abs($diff)."грн. від {$operation->operation_ts}. 
 Ваш поточний баланс: {$operation->client->balance}грн.";
-                    }
+                    
              }
             else {
-                $full_message = "Перерахована абонплата за {$operation->period_month}-{$operation->period_year} на суму ".abs($diff)."грн. від {$operation->operation_ts}. 
+                    $full_message = "Перерахована абонплата за {$operation->period_month}-{$operation->period_year} на суму ".abs($diff)."грн. від {$operation->operation_ts}. 
 Ваш поточний баланс: {$operation->client->balance}грн.";
             }
         }
