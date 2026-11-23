@@ -65,14 +65,17 @@ class ClientsTable
                     ->numeric()
                     ->weight(FontWeight::Bold)
                     ->color(fn(int $state): string => $state < 0? 'danger' : 'success')
-                    ->sortable(),
+                    ->sortable()
+                    ->placeholder('Untitled'),
 
                 ToggleColumn::make('is_locked')
                     ->label('Статус')
                     ->offColor('success')
                     ->onColor('danger')
                     ->onIcon(Heroicon::Bolt)
-                    ->offIcon(Heroicon::User),
+                    ->offIcon(Heroicon::User)
+                    ->placeholder('Untitled')
+                    ,
             ])
             ->defaultSort('balance','asc')
             ->filters([

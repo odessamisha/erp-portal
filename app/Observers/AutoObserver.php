@@ -58,9 +58,9 @@ class AutoObserver
         }
         //назначение авто клиенту
         if ($auto->wasChanged('client_id') and $auto->getOriginal('client_id') == NULL and $prevStatus == 'active'){
-            //$this->adjustOperation($auto,$auto->tarif->price); 
+            $this->adjustOperation($auto,$auto->tarif->price); 
         }
-
+        //
         if ($auto->wasChanged('client_id') and $payroll_type == 'prepay' and $prevStatus == 'deleted'){
             $this->adjustOperation($auto,$auto->tarif->price);   
             $auto->update(['status' => 'active']);
@@ -102,7 +102,6 @@ class AutoObserver
         $operation->operation_ts = $operation->operation_ts ?? now();
         
         $operation->total = $operation->total - $sum;
-        $operation->transaction_total = $operation->transaction_total - $sum;
         $operation->save();
 
         $opr_id = $operation->id;

@@ -9,6 +9,9 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
+use Filament\Actions\Action;
+use Filament\Schemas\Components\Actions;
+use Filament\Support\Enums\VerticalAlignment;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Tabs;
@@ -19,6 +22,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Support\Enums\TextSize;
 use Filament\Support\Enums\FontWeight;
+
 
 
 class OperationForm
@@ -44,11 +48,30 @@ class OperationForm
                                     ->pluck('name', 'id')
                                     ->all()
                                 )
+                                ->getOptionLabelUsing(fn ($value): ?string => Client::find($value)?->name)
                                 ->searchable()
                                 ->preload()
                                 ->required()
                                 ->live()
-                                ->columnSpan(4),
+                                ->columnSpan(fn($state): int => $state == null ? 4 : 3),
+                            Actions::make([
+                                Action::make('resetStars')
+                                ->icon('heroicon-m-adjustments-horizontal')
+                                ->color('warning')
+                                ->outlined()
+                                ->label('Карточка клиента')
+                                ->button()
+                                ->visible(function (Get $get){
+                                    $clientId = $get('client_id');
+                                    if ($clientId) {
+                                        return true;
+                                    }
+                                    return false;
+                                })
+                                ->url(fn (Get $get): string => route('filament.admin.resources.clients.edit',['record' => $get('client_id')]))
+                                ->openUrlInNewTab(),
+                            
+                            ])->verticalAlignment(VerticalAlignment::End),
                                 
                             Select::make('operation_flow')
                                 ->label('Направление операции')
@@ -142,12 +165,11 @@ class OperationForm
                                 ->label('Сумма операции')
                                 ->minValue(1)
                                 ->required()
-                                ->numeric()
-                                ->default(0),
+                                ->numeric(),
                             
                                 
                             TextEntry::make('balance')
-                                ->label('Баланс клиента')
+                                ->label('.')
                                 ->default(function (Set $set, Get $get){
                                     $clientId = $get('client_id');
                                     if ($clientId) {
@@ -156,11 +178,13 @@ class OperationForm
                                     }
                                     return 0;
                                 })
+                                ->prefix('Текущий баланс: ')
                                 ->color(fn(int $state): string => $state < 0? 'danger' : 'success')
                                 ->money('UAH')
                                 ->size(TextSize::Large)
                                 ->weight(FontWeight::ExtraBold)
                                 ->alignEnd()
+                               
                                 ->columnSpan(3)
                                 ,
                                 

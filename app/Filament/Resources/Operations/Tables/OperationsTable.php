@@ -6,6 +6,7 @@ use App\Models\Auto;
 
 use App\Models\ClientMessage;
 use App\Models\Operation;
+use App\Models\Client;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -50,6 +51,13 @@ class OperationsTable
             ->columns([
                 TextColumn::make('client.name')
                     ->label('Название клиента')
+                    ->url(function ($record){
+                        if (isset($record->client_id)) {
+                            return route('filament.admin.resources.clients.edit',['record' => $record->client_id]);
+                        }
+                        
+                    })
+                    ->openUrlInNewTab()
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('operation_flow')

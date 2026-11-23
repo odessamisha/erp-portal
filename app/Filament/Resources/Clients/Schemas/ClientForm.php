@@ -17,6 +17,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ToggleColumn;
 use Tiptap\Nodes\Text;
 use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Components\Fieldset;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
@@ -109,6 +110,7 @@ class ClientForm
                                         ->label('Статус блокировки')
                                         ->boolean()
                                         ->inline()
+                                        ->live()
                                         ->default(false)
                                         ->options([
                                             true => 'Заблокирован',
@@ -123,8 +125,16 @@ class ClientForm
                                             false => Heroicon::OutlinedBolt,
                                             
                                         ])
+                                        ->afterStateUpdated(function (Get $get, Set $set, ?string $state) {
+                                            if ($state == true){
+                                                $set('block_date',now());
+                                            }
+                                        })
                                         ,
-                                    TextInput::make('block_date')    
+                                    DatePicker::make('block_date')
+                                        ->label('Дата блокировки')
+                                        ->default(now())    
+                                        ->readOnly(fn (Get $get): bool => $get('is_locked') == false)
                                     ,    
                                     ToggleButtons::make('is_active')
                                         ->label('Статус активности')
