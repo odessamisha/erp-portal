@@ -31,7 +31,7 @@ https://pb.ua/short?5YYLS
 
     public function created(Operation $operation): void
     {
-
+        $full_message = '';
         if ($operation->client_id <> NULL && (! $operation->wasChanged('total')))
             {
                 $oprTotal = ($operation->total ?? 0);    
@@ -53,10 +53,10 @@ https://pb.ua/short?5YYLS
                     Ваш поточний баланс: {$operation->client->balance}грн."; 
                 }
 
-                
+            //отправка сообщения
+            $this->sendMessage($operation->client,$full_message);    
             }
-        //отправка сообщения
-        $this->sendMessage($operation->client,$full_message);
+        
         
     }
 
