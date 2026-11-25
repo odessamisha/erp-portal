@@ -12,7 +12,7 @@ class ClientMessageObserver
     public function created(ClientMessage $clientMessage): void
     {
         //убрать для отправки через вайбер!!!!
-        //return;
+        return;
         $client = $clientMessage->client;
         $start_text ="
 =============
