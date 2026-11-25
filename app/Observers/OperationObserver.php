@@ -65,10 +65,10 @@ https://pb.ua/short?5YYLS
      */
     public function updated(Operation $operation): void
     {
+        $cur_balance = $operation->client->balance + $operation->total ?? 0;
         //прием платежа, если статус изменился с pending на approved
         if ($operation->wasChanged('status') && $operation->getOriginal('status') === 'pending')
         {
-            $cur_balance = $operation->client->balance + $operation->total ?? 0;
             $this->sendMessage($operation->client, "Ваша оплата на сумму {$operation->total}грн. від {$operation->operation_ts} була успішно прийнята.
             Ваш поточний баланс: {$cur_balance}грн."); 
  
@@ -93,20 +93,20 @@ https://pb.ua/short?5YYLS
         $this->adjustBalance($operation, $diff);
         if ($diff > 0){
             $full_message = "Ваш баланс пополнен на сумму {$diff}грн. від {$operation->operation_ts}.
-            Ваш поточний баланс: {$operation->client->balance}грн.";     
+            Ваш поточний баланс: {$cur_balance}грн.";     
         }
         else{
             if ($originalTotal == 0){
                     $full_message = "Нарахована абонплата за {$operation->period_month}-{$operation->period_year} на суму ".abs($diff)."грн. від {$operation->operation_ts}. 
-Ваш поточний баланс: {$operation->client->balance}грн.";
+Ваш поточний баланс: {$cur_balance}грн.";
                     
              }
             else {
                     $full_message = "Перерахована абонплата за {$operation->period_month}-{$operation->period_year} на суму ".abs($diff)."грн. від {$operation->operation_ts}. 
-Ваш поточний баланс: {$operation->client->balance}грн.";
+Ваш поточний баланс: {$cur_balance}грн.";
             }
         }
-        if ($operation->client->balance < 0){
+        if ($cur_balance < 0){
             $full_message = $full_message.$this->payStr;
         }
         $this->sendMessage($operation->client,$full_message);
@@ -139,6 +139,10 @@ https://pb.ua/short?5YYLS
 
     protected function sendMessage(Client $client, string $message): void
     {
+        if ($message == '')
+        {
+            return;
+        }
         $clientMessage = new ClientMessage();
         $clientMessage->client_id = $client->id;
         $clientMessage->message_id = str()->random();
