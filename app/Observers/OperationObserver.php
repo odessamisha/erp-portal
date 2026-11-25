@@ -11,7 +11,7 @@ class OperationObserver
     /**
      * Handle the Operation "created" event.
      */
-
+    //текст заголовка
     protected string $payStr = '
 
 Дані для оплати:
