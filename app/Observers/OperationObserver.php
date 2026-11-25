@@ -145,7 +145,14 @@ https://pb.ua/short?5YYLS
         $clientMessage->message = $message ? $message : 'No message';
         $clientMessage->status = 'prepared';
         $clientMessage->type = 'outgoing_message';
-        $clientMessage->messenger = $client->exchange->name ?? 'viber';
+        if ($clientMessage->messenger == 'viber' || $clientMessage->messenger == 'telegram'|| $clientMessage->messenger == 'whatsapp')
+        {
+            $clientMessage->messenger = $client->exchange->name;
+        }
+        else 
+        {
+            $clientMessage->messenger ='other';
+        }
         //dd($clientMessage);
         $clientMessage->save();
           
