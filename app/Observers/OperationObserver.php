@@ -97,6 +97,7 @@ https://pb.ua/short?5YYLS
         }
         else{
             if ($originalTotal == 0){
+                    //sleep(2);
                     $full_message = "Нарахована абонплата за {$operation->period_month}-{$operation->period_year} на суму ".abs($diff)."грн. від {$operation->operation_ts}. 
 Ваш поточний баланс: {$cur_balance}грн.";
                     
